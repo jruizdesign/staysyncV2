@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
-import AuthProvider from "@/components/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Hotel Management System",
-  description: "A modular hotel management system.",
+  title: "StaySync",
+  description: "A modern hotel booking application.",
 };
 
 export default function RootLayout({
@@ -18,14 +16,42 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <Script
-          src="https://www.google.com/recaptcha/enterprise.js?render=6LfvIzksAAAAAMVWM11Tqw1sAmCkD8tGW7SLN92a"
-          strategy="beforeInteractive"
-        />
-      </head>
-      <body className={inter.className}>
-        <AuthProvider>{children}</AuthProvider>
+      <body style={{ margin: 0, fontFamily: "sans-serif" }}>
+        <header
+          style={{
+            backgroundColor: "#003366",
+            color: "white",
+            padding: "1rem",
+            textAlign: "center",
+          }}
+        >
+          <h1 style={{ margin: 0, fontSize: "2rem" }}>StaySync</h1>
+          <nav>
+            <a href="/" style={{ color: "white", margin: "0 1rem" }}>
+              Home
+            </a>
+            <a href="/rooms" style={{ color: "white", margin: "0 1rem" }}>
+              Rooms
+            </a>
+            <a href="/login" style={{ color: "white", margin: "0 1rem" }}>
+              Login
+            </a>
+          </nav>
+        </header>
+        <main style={{ padding: "2rem" }}>{children}</main>
+        <footer
+          style={{
+            backgroundColor: "#003366",
+            color: "white",
+            padding: "1rem",
+            textAlign: "center",
+            position: "absolute",
+            bottom: 0,
+            width: "100%",
+          }}
+        >
+          <p>&copy; 2024 StaySync. All rights reserved.</p>
+        </footer>
       </body>
     </html>
   );

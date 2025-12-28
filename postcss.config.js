@@ -2,7 +2,7 @@
 module.exports = {
   plugins: {
     // The `@tailwindcss/postcss` plugin is used to handle Tailwind CSS.
-    '@tailwindcss/postcss': {},
+    '@tailwindcss/postcss': require('@tailwindcss/postcss'),
     autoprefixer: {},
   },
 };
