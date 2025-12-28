@@ -1,53 +1,44 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useState } from 'react';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 declare const grecaptcha: any;
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
-  const router = useRouter();
+  const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     grecaptcha.enterprise.ready(async () => {
-      const token = await grecaptcha.enterprise.execute('6LfvIzksAAAAAMVWM11Tqw1sAmCkD8tGW7SLN92a', {action: 'LOGIN'});
+      const token = await grecaptcha.enterprise.execute('6LfvIzksAAAAAMVWM11Tqw1sAmCkD8tGW7SLN92a', {action: 'REGISTER'});
       if (token) {
-        signInWithEmailAndPassword(email, password);
+        try {
+          const newUser = await createUserWithEmailAndPassword(email, password);
+          if (newUser) {
+            await setDoc(doc(db, 'users', newUser.user.uid), {
+              email: newUser.user.email,
+              role: 'manager',
+              propertyId: null,
+            });
+          }
+        } catch (err: any) {
+          console.error(err);
+        }
       }
     });
   };
 
-  useEffect(() => {
-    if (user) {
-      const fetchUserData = async () => {
-        const userDoc = await getDoc(doc(db, 'users', user.user.uid));
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          // Now you have the user's role and propertyId
-          // You can store this in a global state or context
-          // For now, let's just redirect to the staff login page
-          router.push('/staff-login');
-        } else {
-          // Handle case where user data doesn't exist in Firestore
-        }
-      };
-      fetchUserData();
-    }
-  }, [user, router]);
-
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
-        <h1 className="mb-6 text-center text-3xl font-bold text-gray-800">Login</h1>
-        <form onSubmit={handleSignIn}>
+        <h1 className="mb-6 text-center text-3xl font-bold text-gray-800">Create Account</h1>
+        <form onSubmit={handleRegister}>
           <div className="mb-4">
             <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="email">
               Email
@@ -80,10 +71,10 @@ export default function LoginPage() {
               className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
               disabled={loading}
             >
-              {loading ? 'Signing In...' : 'Sign In'}
+              {loading ? 'Creating Account...' : 'Create Account'}
             </button>
-            <Link href="/register" className="inline-block align-baseline text-sm font-bold text-blue-500 hover:text-blue-800">
-              Create Account
+            <Link href="/login" className="inline-block align-baseline text-sm font-bold text-blue-500 hover:text-blue-800">
+              Sign In
             </Link>
           </div>
           {error && <p className="mt-4 text-center text-red-500">{error.message}</p>}

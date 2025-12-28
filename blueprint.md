@@ -11,11 +11,14 @@ A modular and extensible hotel management system built with Next.js and Firebase
   - **/rooms**: Room management page
   - **/guests**: Guest management page
   - **/settings**: Application settings page
+  - **/login**: Login page
+  - **/register**: User registration page
   - **layout.tsx**: Root layout
   - **page.tsx**: Dashboard/main page
   - **globals.css**: Global styles
 - **/components**: Reusable UI components
   - **Sidebar.tsx**: Navigation sidebar
+- **/lib**: Firebase configuration and utility functions
 - **tailwind.config.js**: Tailwind CSS configuration
 - **postcss.config.js**: PostCSS configuration
 - **next.config.mjs**: Next.js configuration
@@ -28,6 +31,10 @@ A modular and extensible hotel management system built with Next.js and Firebase
 - **Room Management**: Manage room inventory, types, and availability.
 - **Guest Management**: Maintain guest profiles and booking history.
 - **Settings**: Configure application settings.
+- **Two-Tiered Authentication:**
+  - Email/password login for "Manager" and "Superuser" roles.
+  - PIN-based login for "Staff" roles.
+  - Role-based access control (RBAC) to determine property access and permissions.
 
 ## Design
 
@@ -53,5 +60,9 @@ A modular and extensible hotel management system built with Next.js and Firebase
 - **DONE**: Restructure the project to use the App Router.
 - **DONE**: Set up Tailwind CSS for styling.
 - **DONE**: Create the basic layout and pages.
-- **IN PROGRESS**: Build out the functionality for each management section.
-- **TODO**: Implement Firebase authentication.
+- **DONE**: Implemented email/password login and registration.
+- **IN PROGRESS**: Implement two-tiered authentication.
+  - **TODO**: Modify the login process to fetch user data (role, propertyId) from Firestore after a successful login.
+  - **TODO**: Create a staff PIN login page.
+  - **TODO**: Implement PIN verification for staff members.
+  - **TODO**: Securely store (hash) staff PINs in Firestore.
