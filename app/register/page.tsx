@@ -23,8 +23,8 @@ export default function RegisterPage() {
           if (newUser) {
             await setDoc(doc(db, 'users', newUser.user.uid), {
               email: newUser.user.email,
-              role: 'manager',
-              propertyId: null,
+              role: 'staff', // Default role for new accounts is 'staff'
+              propertyId: null, // This can be assigned later by a manager
             });
           }
         } catch (err: any) {
@@ -35,60 +35,49 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="flex w-full max-w-4xl rounded-lg bg-white shadow-lg">
-        <div className="hidden w-1/2 lg:block">
-          <img
-            src="https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-            alt="Hotel"
-            className="h-full w-full rounded-l-lg object-cover"
-          />
-        </div>
-        <div className="w-full p-8 lg:w-1/2">
-          <h1 className="mb-2 text-4xl font-bold text-gray-800">Create an Account</h1>
-          <p className="mb-8 text-gray-600">Join us and manage your property</p>
-          <form onSubmit={handleRegister}>
-            <div className="mb-4">
-              <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="email">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="focus:shadow-outline w-full appearance-none rounded-lg border px-3 py-3 text-lg leading-tight text-gray-700 shadow-md focus:outline-none"
-                required
-              />
-            </div>
-            <div className="mb-6">
-              <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="password">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="focus:shadow-outline mb-3 w-full appearance-none rounded-lg border px-3 py-3 text-lg leading-tight text-gray-700 shadow-md focus:outline-none"
-                required
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <button
-                type="submit"
-                className="focus:shadow-outline rounded-lg bg-indigo-500 px-6 py-3 font-bold text-white shadow-lg transition-transform duration-200 hover:scale-105 hover:bg-indigo-700 focus:outline-none"
-                disabled={loading}
-              >
-                {loading ? 'Creating Account...' : 'Create Account'}
-              </button>
-              <Link href="/login" className="inline-block align-baseline text-sm font-bold text-indigo-500 hover:text-indigo-800">
-                Already have an account?
-              </Link>
-            </div>
-            {error && <p className="mt-4 text-center text-red-500">{error.message}</p>}
-          </form>
-        </div>
+    <div style={{ background: "linear-gradient(to right, #6a11cb, #2575fc)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ backgroundColor: "rgba(255, 255, 255, 0.1)", borderRadius: "12px", boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)", backdropFilter: "blur(4px)", border: "1px solid rgba(255, 255, 255, 0.18)", maxWidth: "400px", width: "100%", padding: "2rem" }}>
+        <h1 style={{ color: "white", fontSize: "2.5rem", fontWeight: "bold", textAlign: "center", marginBottom: "1rem" }}>Create Staff Account</h1>
+        <p style={{ color: "#ddd", textAlign: "center", marginBottom: "2rem" }}>Add a new staff member to the system</p>
+        <form onSubmit={handleRegister}>
+          <div style={{ marginBottom: "1.5rem" }}>
+            <label htmlFor="email" style={{ display: "block", color: "#ddd", marginBottom: "0.5rem" }}>
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={{ width: "100%", padding: "0.75rem", border: "none", borderRadius: "8px", backgroundColor: "rgba(255, 255, 255, 0.2)", color: "white" }}
+              required
+            />
+          </div>
+          <div style={{ marginBottom: "1.5rem" }}>
+            <label htmlFor="password" style={{ display: "block", color: "#ddd", marginBottom: "0.5rem" }}>
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={{ width: "100%", padding: "0.75rem", border: "none", borderRadius: "8px", backgroundColor: "rgba(255, 255, 255, 0.2)", color: "white" }}
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            style={{ width: "100%", background: "linear-gradient(to right, #ff6f61, #ff9966)", color: "white", padding: "0.75rem", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: "bold", marginBottom: "1rem" }}
+            disabled={loading}
+          >
+            {loading ? 'Creating Account...' : 'Create Account'}
+          </button>
+          <Link href="/" style={{ color: "#ddd", textAlign: "center", display: "block" }}>
+            Back to Login
+          </Link>
+          {error && <p style={{ marginTop: "1rem", color: "#ff6f61", textAlign: "center" }}>{error.message}</p>}
+        </form>
       </div>
     </div>
   );
